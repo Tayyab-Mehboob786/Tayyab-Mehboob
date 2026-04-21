@@ -93,7 +93,7 @@ export const PORTFOLIO_DATA = {
       desc: [
         "Leading strategic development and technical vision for the organization.",
         "Collaborating on full-stack solutions and managing software project lifecycles.",
-        "Driving innovation in software services within the local tech ecosystem"
+        "Driving innovation in software services within the local tech ecosystem."
       ]
     },
     {
@@ -107,7 +107,18 @@ export const PORTFOLIO_DATA = {
         "Focused on performance optimization and cross-browser compatibility."
       ]
     },
-     ],
+    {
+      company: "Quaid-i-Azam University",
+      role: "Software Engineering Student (Final Year)",
+      period: "2022 - 2026",
+      logo: "/qau.png",
+      desc: [
+        "Specializing in MERN Stack development, OOP, and Data Structures.",
+        "Developing 'SalahMate' activity tracker as a Final Year Project.",
+        "Achieved 73rd percentile in National Skill Competency Test 2026."
+      ]
+    }
+  ],
   education: [
     {
       degree: "Bachelor's in Computer Science",
@@ -127,14 +138,22 @@ export const PORTFOLIO_DATA = {
     },
     {
       id: 2,
+      title: "Tayyab Express",
+      desc: "Developed a MERN Stack e-commerce application with JWT authentication, RESTful APIs, and CRUD operations using MongoDB.",
+      tech: ["MongoDB", "Express", "React", "Node.js"],
+      links: { demo: "#", code: "https://github.com/Tayyab-Mehboob786/Tayyab_Express" },
+      icon: <Layout size={48} />
+    },
+    {
+      id: 3,
       title: "Cricket Platform",
-      desc: "Full-stack cricket info platform with live match API integration and dashboards[cite: 26, 27].",
+      desc: "Full-stack cricket info platform with live match API integration and dashboards.",
       tech: ["MERN Stack", "Auth", "Node.js"],
       links: { demo: "#", code: "https://github.com/Tayyab-Mehboob786/Cricket-website" },
       icon: <Layout size={48} />
     },
     {
-      id: 3,
+      id: 4,
       title: "Tic-Tac-Toe Game",
       desc: "Fully functional 2-player game demonstrating clean logic and DOM manipulation.",
       tech: ["HTML", "CSS", "JavaScript"],
@@ -142,7 +161,7 @@ export const PORTFOLIO_DATA = {
       icon: <Code size={48} />
     },
     {
-      id: 4,
+      id: 5,
       title: "Quiz Website",
       desc: "Multi-category quiz platform featuring dynamic DOM manipulation and score tracking.",
       tech: ["JavaScript", "DOM", "CSS"],
@@ -150,7 +169,7 @@ export const PORTFOLIO_DATA = {
       icon: <HelpCircle size={48} />
     },
     {
-      id: 5,
+      id: 6,
       title: "Personal Portfolio",
       desc: "Clean and responsive portfolio showcasing projects and technical skills.",
       tech: ["React", "CSS", "Responsive"],
