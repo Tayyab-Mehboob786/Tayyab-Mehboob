@@ -121,7 +121,7 @@ export const PORTFOLIO_DATA = {
       id: 1,
       title: "Salah Activity Tracker", 
       desc: "Mobile app for tracking prayers, streaks, and analytics with personalized AI guidance.",
-      tech: ["Flutter", "MongoDB", "Node.js"],
+      tech: ["React Native", "MongoDB", "Node.js"],
       links: { demo: "#", code: "#" },
       icon: <Smartphone size={48} />
     },
