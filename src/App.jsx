@@ -1,9 +1,10 @@
 import React from 'react';
-import './App.css'; // Import the standard CSS file
 
+import './App.css';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Skills from './components/Skills';
+import Experience from './components/Experience'; // Added the new Experience component
 import Education from './components/Education';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
@@ -15,6 +16,7 @@ const App = () => {
       <Navbar />
       <Hero />
       <Skills />
+      <Experience /> {/* New section added here */}
       <Education />
       <Projects />
       <Contact />

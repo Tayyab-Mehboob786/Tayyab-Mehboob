@@ -619,3 +619,102 @@ button {
   gap: 2rem;
   margin-top: 1rem;
 }
+/* --- EXPERIENCE SECTION STYLES --- */
+.section-title {
+  margin-bottom: 3rem;
+  text-align: left; /* Adjust to 'center' if your Tech Stack is centered */
+}
+
+.section-title h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.underline-gradient {
+  height: 4px;
+  width: 80px;
+  background: linear-gradient(to right, var(--primary), var(--secondary));
+  border-radius: 2px;
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  max-width: 600px;
+}
+.experience-timeline {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.experience-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.experience-card:hover {
+  border-color: var(--primary);
+  transform: scale(1.01);
+}
+
+.exp-card-header {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.exp-logo-box {
+  width: 60px;
+  height: 60px;
+  background: #fff; /* White background makes company logos pop */
+  padding: 8px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.experience-logo {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.exp-role { font-size: 1.4rem; color: #fff; margin: 0; }
+.exp-company { color: var(--primary); font-size: 1.1rem; margin: 0; }
+
+.exp-meta {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.exp-bullets { list-style: none; padding: 0; }
+.exp-bullets li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.8rem;
+  color: var(--text-main);
+  font-size: 0.95rem;
+}
+
+.exp-bullets li::before {
+  content: "▹";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: bold;
+}

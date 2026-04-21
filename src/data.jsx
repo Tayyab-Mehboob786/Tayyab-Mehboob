@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import React from 'react';
 
-// ADDED: FaLightbulb, FaUsers, FaComments, FaSync for the new Soft Skills
+// Icons from react-icons used in skill/project lists
 import { FaHtml5, FaCss3Alt, FaReact, FaNodeJs, FaJava, FaGithub, FaLightbulb, FaUsers, FaComments, FaSync } from 'react-icons/fa';
 import { SiTailwindcss, SiJavascript, SiExpress, SiMongodb, SiCplusplus, SiPostman, SiNetlify } from 'react-icons/si';
 import { TbDeviceMobile, TbApi, TbCpu } from 'react-icons/tb';
@@ -24,7 +24,7 @@ export const PORTFOLIO_DATA = {
     name: "Tayyab Mehboob",
     role: "MERN Stack Developer",
     tagline: "Building responsive web apps & mobile solutions.",
-    description: "Computer Science graduate with strong foundation in Object-Oriented Programming, Data Structure & Algorithms and database systems. Hands-on experience developing scalable web and mobile applications using MERN Stack (React.js, Node.js, Express.js, MongoDB). Skilled in REST API development, debugging and performance optimization with a problem-solving mindset."
+    description: "Computer Science graduate with a strong foundation in Object-Oriented Programming, Data Structures & Algorithms, and database systems. Hands-on experience developing scalable web and mobile applications using the MERN Stack (React.js, Node.js, Express.js, MongoDB). Skilled in REST API development, debugging, and performance optimization with a problem-solving mindset."
   },
   skillCategories: [
     {
@@ -74,17 +74,40 @@ export const PORTFOLIO_DATA = {
         { name: "Netlify", icon: <SiNetlify size={24} color="#00C7B7" /> }
       ]
     },
-    // NEW: Soft Skills Category Added Here!
     {
       category: "Soft Skills",
       skills: [
-        { name: "Problem-Solving", icon: <FaLightbulb size={24} color="#F59E0B" /> }, // Yellow/Amber
-        { name: "Teamwork", icon: <FaUsers size={24} color="#3B82F6" /> },          // Blue
-        { name: "Communication", icon: <FaComments size={24} color="#10B981" /> },   // Green
-        { name: "Adaptability", icon: <FaSync size={24} color="#8B5CF6" /> }         // Purple
+        { name: "Problem-Solving", icon: <FaLightbulb size={24} color="#F59E0B" /> },
+        { name: "Teamwork", icon: <FaUsers size={24} color="#3B82F6" /> },
+        { name: "Communication", icon: <FaComments size={24} color="#10B981" /> },
+        { name: "Adaptability", icon: <FaSync size={24} color="#8B5CF6" /> }
       ]
     }
   ],
+  experience: [
+    {
+      company: "DataTricks",
+      role: "Co-Founder",
+      period: "June 2024 - Present",
+      logo: "/DataTricks.jpg",
+      desc: [
+        "Leading strategic development and technical vision for the organization.",
+        "Collaborating on full-stack solutions and managing software project lifecycles.",
+        "Driving innovation in software services within the local tech ecosystem"
+      ]
+    },
+    {
+      company: "CodeAlpha",
+      role: "Frontend Web Developer",
+      period: "July 2024 - September 2024",
+      logo: "/CodeAlpha.jpg",
+      desc: [
+        "Developed responsive user interfaces using modern frontend technologies.",
+        "Collaborated with the development team to implement clean and efficient code.",
+        "Focused on performance optimization and cross-browser compatibility."
+      ]
+    },
+     ],
   education: [
     {
       degree: "Bachelor's in Computer Science",
@@ -94,10 +117,10 @@ export const PORTFOLIO_DATA = {
     }
   ],
   projects: [
-    {
+    { 
       id: 1,
       title: "Salah Activity Tracker", 
-      desc: "Mobile app for tracking prayers, streaks, and analytics with personalized AI guidance.(This project is Under process right now)",
+      desc: "Mobile app for tracking prayers, streaks, and analytics with personalized AI guidance.",
       tech: ["Flutter", "MongoDB", "Node.js"],
       links: { demo: "#", code: "#" },
       icon: <Smartphone size={48} />
@@ -105,7 +128,7 @@ export const PORTFOLIO_DATA = {
     {
       id: 2,
       title: "Cricket Platform",
-      desc: "Full-stack cricket info platform with live match API integration and dashboards.",
+      desc: "Full-stack cricket info platform with live match API integration and dashboards[cite: 26, 27].",
       tech: ["MERN Stack", "Auth", "Node.js"],
       links: { demo: "#", code: "https://github.com/Tayyab-Mehboob786/Cricket-website" },
       icon: <Layout size={48} />
