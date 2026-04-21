@@ -107,17 +107,6 @@ export const PORTFOLIO_DATA = {
         "Focused on performance optimization and cross-browser compatibility."
       ]
     },
-    {
-      company: "Quaid-i-Azam University",
-      role: "Software Engineering Student (Final Year)",
-      period: "2022 - 2026",
-      logo: "/qau.png",
-      desc: [
-        "Specializing in MERN Stack development, OOP, and Data Structures.",
-        "Developing 'SalahMate' activity tracker as a Final Year Project.",
-        "Achieved 73rd percentile in National Skill Competency Test 2026."
-      ]
-    }
   ],
   education: [
     {
