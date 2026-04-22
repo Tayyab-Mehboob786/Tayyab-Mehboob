@@ -1,56 +1,43 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
 
-// Vercel Serverless function to send email via SMTP using nodemailer.
-// Expects these environment variables to be set in Vercel dashboard:
-// SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, CONTACT_TO_EMAIL
-
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    res.status(405).json({ error: 'Method not allowed' });
-    return;
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { from_name, from_email, message } = req.body || {};
-  if (!from_name || !from_email || !message) {
-    res.status(400).json({ error: 'Missing fields' });
-    return;
-  }
+  const { from_name, from_email, message } = req.body;
+
+  // 1. Setup the transporter using environment variables
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: parseInt(process.env.SMTP_PORT || '587'),
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS, // Your 16-character Google App Password
+    },
+  });
 
   try {
-    const host = process.env.SMTP_HOST;
-    const port = process.env.SMTP_PORT || 587;
-    const user = process.env.SMTP_USER;
-    const pass = process.env.SMTP_PASS;
-    const to = process.env.CONTACT_TO_EMAIL;
-
-    if (!host || !user || !pass || !to) {
-      res.status(500).json({ error: 'SMTP configuration missing on server' });
-      return;
-    }
-
-    const transporter = nodemailer.createTransport({
-      host,
-      port: Number(port),
-      secure: Number(port) === 465, // true for 465, false for other ports
-      auth: {
-        user,
-        pass,
-      },
+    // 2. Send the email
+    await transporter.sendMail({
+      from: `"${from_name}" <${process.env.SMTP_USER}>`, // Send FROM your email
+      to: process.env.CONTACT_TO_EMAIL, // Receive AT your email
+      replyTo: from_email, // Reply goes to the person who filled the form
+      subject: `New Portfolio Message from ${from_name}`,
+      text: `Name: ${from_name}\nEmail: ${from_email}\n\nMessage:\n${message}`,
+      html: `
+        <h3>New Portfolio Message</h3>
+        <p><strong>Name:</strong> ${from_name}</p>
+        <p><strong>Email:</strong> ${from_email}</p>
+        <p><strong>Message:</strong></p>
+        <p>${message}</p>
+      `,
     });
 
-    const mailOptions = {
-      from: `${from_name} <${from_email}>`,
-      to,
-      subject: `Portfolio contact from ${from_name}`,
-      text: `Name: ${from_name}\nEmail: ${from_email}\n\n${message}`,
-      html: `<p><strong>Name:</strong> ${from_name}</p><p><strong>Email:</strong> ${from_email}</p><p>${message}</p>`,
-    };
-
-    await transporter.sendMail(mailOptions);
-
-    res.status(200).json({ ok: true });
-  } catch (err) {
-    console.error('send-email error', err);
-    res.status(500).json({ error: 'Failed to send email' });
+    return res.status(200).json({ message: 'Email sent successfully' });
+  } catch (error) {
+    console.error('Nodemailer Error:', error);
+    return res.status(500).json({ error: 'Failed to send email', details: error.message });
   }
-};
+}
