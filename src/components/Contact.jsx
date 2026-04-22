@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Mail, Github, Linkedin } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { send } from '@emailjs/browser';
 
-// Small helper to check for a full name (basic: contains at least two words)
+// Helper to check for a full name (at least two words)
 const isFullName = (name) => {
   if (!name) return false;
   const parts = name.trim().split(/\s+/);
@@ -18,12 +17,6 @@ const Contact = () => {
   const [status, setStatus] = useState(null); // 'success' | 'error'
   const [error, setError] = useState('');
 
-  const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-  const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-  const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-  const formspreeEndpoint = import.meta.env.VITE_FORMSPREE_ENDPOINT; // e.g. https://formspree.io/f/xxxxx
-  const useServerless = import.meta.env.VITE_USE_SERVERLESS === 'true';
-
   const validate = () => {
     if (!isFullName(fullName)) return 'Please enter your full name (first & last name).';
     if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return 'Please enter a valid email.';
@@ -32,118 +25,44 @@ const Contact = () => {
   };
 
   const handleSend = async (e) => {
-    e && e.preventDefault();
+    e.preventDefault();
     setStatus(null);
-    const v = validate();
-    if (v) {
-      setError(v);
+    setError('');
+
+    const validationError = validate();
+    if (validationError) {
+      setError(validationError);
       return;
     }
-    setError('');
+
     setLoading(true);
 
-    // If EmailJS env vars are set, try sending via EmailJS
-    if (serviceId && templateId && publicKey) {
-      try {
-        const templateParams = {
-          from_name: fullName,
-          from_email: email,
-          message: message,
-        };
-        await send(serviceId, templateId, templateParams, publicKey);
+    try {
+      // Direct call to your Vercel Serverless Function
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          from_name: fullName, 
+          from_email: email, 
+          message: message 
+        }),
+      });
+
+      if (response.ok) {
         setStatus('success');
         setFullName('');
         setEmail('');
         setMessage('');
-      } catch (err) {
-        console.error('EmailJS error', err);
+      } else {
+        const data = await response.json().catch(() => ({}));
         setStatus('error');
-        setError('Sending failed — please try again or use the fallback link.');
-      } finally {
-        setLoading(false);
+        setError(data.error || 'Server error. Please try again later.');
       }
-      return;
-    }
-
-    // If Formspree endpoint is provided, POST to it
-    if (formspreeEndpoint) {
-      try {
-        const res = await fetch(formspreeEndpoint, {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            name: fullName,
-            email,
-            message,
-            from_name: fullName,
-            from_email: email
-          })
-        });
-
-        if (res.ok) {
-          setStatus('success');
-          setFullName('');
-          setEmail('');
-          setMessage('');
-        } else {
-          const data = await res.json().catch(() => ({}));
-          setStatus('error');
-          setError(data.error || 'Formspree returned an error');
-        }
-      } catch (err) {
-        console.error('Formspree error', err);
-        setStatus('error');
-        setError('Sending via Formspree failed.');
-      } finally {
-        setLoading(false);
-      }
-      return;
-    }
-
-    // If serverless usage flagged, POST to relative API endpoint (/api/send-email)
-    if (useServerless) {
-      try {
-        const apiUrl = import.meta.env.VITE_SERVERLESS_ENDPOINT || '/api/send-email';
-        const res = await fetch(apiUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ from_name: fullName, from_email: email, message })
-        });
-
-        if (res.ok) {
-          setStatus('success');
-          setFullName('');
-          setEmail('');
-          setMessage('');
-        } else {
-          const d = await res.json().catch(() => ({}));
-          setStatus('error');
-          setError(d.error || 'Serverless endpoint returned an error');
-        }
-      } catch (err) {
-        console.error('Serverless error', err);
-        setStatus('error');
-        setError('Sending via serverless endpoint failed.');
-      } finally {
-        setLoading(false);
-      }
-      return;
-    }
-
-    // Fallback: open user's email client with prefilled subject/body (mailto)
-    try {
-      const subject = encodeURIComponent(`Portfolio message from ${fullName}`);
-      const body = encodeURIComponent(`Name: ${fullName}\nEmail: ${email}\n\n${message}`);
-      const mailto = `mailto:tayyabmehboob2003@gmail.com?subject=${subject}&body=${body}`;
-      window.location.href = mailto;
-      setStatus('success');
     } catch (err) {
-      console.error(err);
+      console.error('Submission error:', err);
       setStatus('error');
-      setError('Could not open mail client.');
+      setError('Connection failed. Please check your internet or try again.');
     } finally {
       setLoading(false);
     }
@@ -154,13 +73,14 @@ const Contact = () => {
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           className="contact-box"
         >
-          <h2>Let's Build Something Amazing</h2>
-          <p className="section-subtitle" style={{ margin: '1rem auto' }}>
-           Actively seeking internship and full-time opportunities to contribute to dynamic software engineering teams.
+          <h2 className="gradient-text" style={{ fontSize: '2.5rem', fontWeight: 800 }}>Let's Build Something Amazing</h2>
+          <p className="section-subtitle" style={{ margin: '1.5rem auto' }}>
+            Actively seeking internship and full-time opportunities to contribute to dynamic software engineering teams.
           </p>
 
           <form className="contact-form" onSubmit={handleSend}>
@@ -169,7 +89,7 @@ const Contact = () => {
               <input
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                placeholder="Your full name (first and last)"
+                placeholder="Your first and last name"
                 required
               />
             </label>
@@ -196,7 +116,7 @@ const Contact = () => {
               />
             </label>
 
-            {error && <div className="form-error" style={{ color: '#e03e2d' }}>{error}</div>}
+            {error && <div className="form-error" style={{ color: '#ef4444', marginTop: '0.5rem', fontSize: '0.9rem' }}>{error}</div>}
 
             <div className="contact-actions">
               <motion.button
@@ -205,6 +125,7 @@ const Contact = () => {
                 className="btn btn-primary"
                 type="submit"
                 disabled={loading}
+                style={{ minWidth: '160px' }}
               >
                 {loading ? 'Sending...' : 'Send Message'} <Mail size={16} />
               </motion.button>
@@ -222,18 +143,18 @@ const Contact = () => {
 
           {status === 'success' && (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
               className="form-success"
-              style={{ color: '#198754', marginTop: '1rem' }}
+              style={{ color: '#22c55e', marginTop: '1.5rem', fontWeight: 600 }}
             >
-              Message sent! Thank you — I'll respond as soon as I can.
+              🎉 Message sent! I'll get back to you at your email soon.
             </motion.div>
           )}
 
-          {status === 'error' && (
-            <div className="form-error" style={{ color: '#e03e2d', marginTop: '1rem' }}>
-              Oops — something went wrong. Please try again or use the email link above.
+          {status === 'error' && !error && (
+            <div className="form-error" style={{ color: '#ef4444', marginTop: '1.5rem' }}>
+              Oops — something went wrong. Please check the console or try again.
             </div>
           )}
         </motion.div>
